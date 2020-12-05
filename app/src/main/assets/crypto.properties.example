@@ -1,0 +1,9 @@
+# This properties file contains secret key and IV string used to encrypt and decrypt BINUSMAYA request payload
+# and responses. You can obtain those values from BINUS Mobile's decompiled APK. Just search for a
+# cryptography class and you will find it there.
+#
+# Once you found the 2 string values. Copy this file to crypto.properties in the same directory as this
+# example file. Then put the two values in two property keys below. You need to do this otherwise
+# the app will crash at startup.
+crypto.secret_key="XXXXXX"
+crypto.iv_string="XXXXXX"

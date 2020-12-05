@@ -1,0 +1,45 @@
+<resources>
+    <string name="forum_refresh_confirm_title">Refresh daftar forum</string>
+    <string name="forum_refresh_confirm_message">Aplikasi secara otomatis merefresh daftar forum yang tersimpan di perangkat kamu dengan data dari BINUSMAYA setiap 3 jam. Apakah kamu ingin melakukannya sekarang? Proses ini mungkin akan memakan waktu lama.</string>
+
+    <string name="logout_confirmation_title">Yakin mau keluar?</string>
+    <string name="logout_confirmation_message">Semua data yang tersimpan untuk aplikasi ini akan dihapus.</string>
+
+    <string name="dialog_positive_btn">Lanjut</string>
+    <string name="dialog_neutral_btn">Ngga deh</string>
+
+    <string name="all_forum_replied">Yey, semua forum udah dibalas</string>
+    <string name="upload_file_over_limit">Duh, filenya jangan lebih dari %1$s MB dong</string>
+    <string name="open_file_permission_denied">Izinin ambil filenya dong please!!</string>
+    <string name="sending_reply">Mengirim balasan…</string>
+    <string name="reply_sent">Reply berhasil dikirim</string>
+    <string name="empty_reply_message">Balasannya kosong cuk</string>
+    <string name="your_reply">Balasan Kamu</string>
+    <string name="list_forum_updating_toast">Mengupdate daftar forum dari BINUSMAYA</string>
+    <string name="list_forum_updating">Daftar forum sedang diupdate</string>
+    <string name="app_name">BINUS MyForum</string>
+    <string name="binus">BINUS</string>
+    <string name="myforum">MyForum</string>
+    <string name="intro_string">BINUS MyForum adalah aplikasi yang dibuat untuk memudahkan binusian untuk mencari forum di BINUSMAYA.</string>
+    <string name="mulai">Mulai</string>
+    <string name="login">Masuk</string>
+    <string name="login_explanation_string">Yuk masuk dengan akun BINUSMAYA kamu. Tenang, password kamu ngga kami simpan kok.</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="refresh">Refresh</string>
+    <string name="keluar">Keluar</string>
+    <string name="lihat_semua_forum">Lihat Semua Forum</string>
+    <string name="forum_gslc_hari_ini">Forum GSLC minggu ini</string>
+    <string name="balas_forum">Balas Forum</string>
+    <string name="tulis_pesan_disini">Tulis pesan disini</string>
+    <string name="upload_file">Upload File</string>
+    <string name="kirim">Kirim</string>
+    <string name="header_greeting">Hai, %1$s!</string>
+    <string name="forum_deadline_text">%1$s (%2$s hari lagi)</string>
+    <string name="no_forum">Tidak ada forum</string>
+    <string name="no_forum_toast">Tidak ada forum untuk GSLC ini</string>
+    <string name="unreplied_forum_count">Kamu punya %1$s forum yang belum dibalas</string>
+    <string name="intro_author">By Putu Prema</string>
+    <string name="indikator_forum_sudah_dibalas">Indikator forum sudah dibalas</string>
+    <string name="logo_spacer">|</string>
+</resources>
