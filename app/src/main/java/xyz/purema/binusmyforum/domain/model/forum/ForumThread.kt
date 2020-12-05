@@ -1,7 +1,7 @@
 package xyz.purema.binusmyforum.domain.model.forum
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
 @Parcelize

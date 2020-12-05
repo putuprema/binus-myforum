@@ -7,8 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import xyz.purema.binusmyforum.BuildConfig
 import xyz.purema.binusmyforum.data.prefs.SharedPrefs
 import xyz.purema.binusmyforum.data.remote.converter.InstantTypeAdapter
 import xyz.purema.binusmyforum.data.remote.converter.LocalDateTimeTypeAdapter
@@ -36,7 +38,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun okHttpClient(sharedPrefs: SharedPrefs): OkHttpClient {
-        return OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
             .addInterceptor {
                 val original = it.request()
 
@@ -52,13 +54,17 @@ object NetworkModule {
 
                 it.proceed(newRequestBuilder.build())
             }
-//            .addInterceptor(HttpLoggingInterceptor().apply {
-//                level = HttpLoggingInterceptor.Level.BODY
-//            })
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)
             .writeTimeout(1, TimeUnit.MINUTES)
-            .build()
+
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+        }
+
+        return builder.build()
     }
 
     @Singleton

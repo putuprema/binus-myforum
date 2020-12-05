@@ -1,7 +1,7 @@
 package xyz.purema.binusmyforum.domain.model.student
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Student(
