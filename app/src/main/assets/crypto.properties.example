@@ -5,5 +5,5 @@
 # Once you found the 2 string values. Copy this file to crypto.properties in the same directory as this
 # example file. Then put the two values in two property keys below. You need to do this otherwise
 # the app will crash at startup.
-crypto.secret_key="XXXXXX"
-crypto.iv_string="XXXXXX"
+crypto.secret_key=XXXXXX
+crypto.iv_string=XXXXXX
