@@ -78,7 +78,7 @@ class ForumRepositoryImpl(
             .enqueueUniquePeriodicWork(
                 ForumDataSyncWorker.TAG,
                 ExistingPeriodicWorkPolicy.REPLACE,
-                PeriodicWorkRequestBuilder<ForumDataSyncWorker>(3, TimeUnit.HOURS)
+                PeriodicWorkRequestBuilder<ForumDataSyncWorker>(8, TimeUnit.HOURS)
                     .setConstraints(
                         Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                     )
