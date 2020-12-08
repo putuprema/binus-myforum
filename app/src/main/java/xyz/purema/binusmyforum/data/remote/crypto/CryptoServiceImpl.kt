@@ -1,7 +1,8 @@
 package xyz.purema.binusmyforum.data.remote.crypto
 
 import android.util.Base64
-import org.apache.commons.codec.digest.DigestUtils
+import com.google.android.gms.common.util.Hex
+import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -18,8 +19,9 @@ class CryptoServiceImpl(
     ivString: String
 ) : CryptoService {
     // encode maximum first 32 characters of the secret key string to byte array
-    private val key = DigestUtils.sha256Hex(secretKeyString)
-        .encodeToByteArray(endIndex = min(32, secretKeyString.length))
+    private val key = Hex.bytesToStringLowercase(
+        MessageDigest.getInstance("SHA-256").digest(secretKeyString.toByteArray())
+    ).encodeToByteArray(endIndex = min(32, secretKeyString.length))
 
     // encode maximum first 16 characters of the IV string to byte array
     private val iv = ivString.encodeToByteArray(endIndex = min(16, ivString.length))
