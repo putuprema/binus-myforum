@@ -5,4 +5,5 @@ enum class ClassType(val description: String) {
     LEC("Kelas Kecil Teori"),
     CLB("Kelas Besar LAB"),
     LAB("Kelas Kecil LAB"),
+    TUT("Kelas Tutorial")
 }
