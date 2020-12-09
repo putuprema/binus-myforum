@@ -31,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
 
         subscribeObservers()
         lifecycleScope.launch {
-            delay(2000)
+            delay(1000)
             viewModel.publishEvent(SplashViewEvent.ResumeSession)
         }
     }

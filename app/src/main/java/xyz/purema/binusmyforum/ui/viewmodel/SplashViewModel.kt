@@ -1,10 +1,16 @@
 package xyz.purema.binusmyforum.ui.viewmodel
 
+import android.content.Context
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import xyz.purema.binusmyforum.data.prefs.SharedPrefs
+import xyz.purema.binusmyforum.data.worker.RefreshTokenWorker
 import xyz.purema.binusmyforum.domain.exception.AppException
 import xyz.purema.binusmyforum.domain.model.student.Student
 import xyz.purema.binusmyforum.domain.repository.StudentRepository
@@ -12,6 +18,7 @@ import xyz.purema.binusmyforum.domain.repository.StudentRepository
 class SplashViewModel
 @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
+    @ApplicationContext private val context: Context,
     private val studentRepository: StudentRepository,
     private val sharedPrefs: SharedPrefs
 ) : ViewModel() {
@@ -31,7 +38,16 @@ class SplashViewModel
             _state.value = try {
                 val lastEmail = sharedPrefs.lastEmail
                 if (lastEmail != null) {
-                    val profile = studentRepository.refreshToken()
+                    val profile = studentRepository.getProfile()
+
+                    // schedule refresh token job
+                    WorkManager.getInstance(context)
+                        .enqueueUniqueWork(
+                            RefreshTokenWorker::class.java.simpleName,
+                            ExistingWorkPolicy.KEEP,
+                            OneTimeWorkRequestBuilder<RefreshTokenWorker>().build()
+                        )
+
                     AuthState.Success(profile)
                 } else {
                     AuthState.IsFirstLogin

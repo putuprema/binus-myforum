@@ -24,7 +24,6 @@ import xyz.purema.binusmyforum.data.remote.mapper.StudentRemoteMapper
 import xyz.purema.binusmyforum.data.remote.model.request.BinusAuthRequest
 import xyz.purema.binusmyforum.data.remote.model.response.courseschedule.BinusCourseClass
 import xyz.purema.binusmyforum.data.worker.ReminderWorker
-import xyz.purema.binusmyforum.domain.exception.AppException
 import xyz.purema.binusmyforum.domain.model.ClassType
 import xyz.purema.binusmyforum.domain.model.student.Student
 import xyz.purema.binusmyforum.domain.repository.ForumRepository
@@ -78,7 +77,7 @@ class StudentRepositoryImpl(
         }
     }
 
-    override suspend fun refreshToken(): Student {
+    override suspend fun refreshToken() {
         try {
             val refreshToken = sharedPrefs.refreshToken
             if (refreshToken != null) {
@@ -88,9 +87,7 @@ class StudentRepositoryImpl(
                 )
                 sharedPrefs.accessToken = auth.accessToken
                 sharedPrefs.refreshToken = auth.refreshToken
-                return getProfile()
             }
-            throw AppException("Refresh token tidak tersedia", "")
         } catch (ex: Exception) {
             throw apiUtils.handleRequestError(ex)
         }
