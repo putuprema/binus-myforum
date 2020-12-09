@@ -31,6 +31,7 @@ import xyz.purema.binusmyforum.domain.repository.StudentRepository
 import xyz.purema.binusmyforum.domain.utils.ApiUtils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class StudentRepositoryImpl(
@@ -137,7 +138,7 @@ class StudentRepositoryImpl(
                 }
 
             // 3. Add enrolled courses and its associated class & schedule for the current student
-            val dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy")
+            val dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.US)
 
             val courseMap = hashMapOf<String, CourseDb>()
             val courseClassMap = hashMapOf<String, CourseClassDb>()
