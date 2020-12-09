@@ -163,7 +163,11 @@ class StudentRepositoryImpl(
                             classNumber,
                             courseId,
                             classSection,
-                            ClassType.valueOf(classType)
+                            try {
+                                ClassType.valueOf(classType)
+                            } catch (ex: IllegalArgumentException) {
+                                ClassType.UNK
+                            }
                         )
 
                     courseClassScheduleList.addAll(
