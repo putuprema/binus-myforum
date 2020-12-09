@@ -18,8 +18,6 @@
     <string name="list_forum_updating_toast">Mengupdate daftar forum dari BINUSMAYA</string>
     <string name="list_forum_updating">Daftar forum sedang diupdate</string>
     <string name="app_name">BINUS MyForum</string>
-    <string name="binus">BINUS</string>
-    <string name="myforum">MyForum</string>
     <string name="intro_string">BINUS MyForum adalah aplikasi yang dibuat untuk memudahkan binusian untuk mencari forum di BINUSMAYA.</string>
     <string name="mulai">Mulai</string>
     <string name="login">Masuk</string>
@@ -41,5 +39,4 @@
     <string name="unreplied_forum_count">Kamu punya %1$s forum yang belum dibalas</string>
     <string name="intro_author">By Putu Prema</string>
     <string name="indikator_forum_sudah_dibalas">Indikator forum sudah dibalas</string>
-    <string name="logo_spacer">|</string>
 </resources>

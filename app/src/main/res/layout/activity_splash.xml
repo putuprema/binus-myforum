@@ -7,43 +7,15 @@
     android:padding="@dimen/activity_padding_horizontal"
     tools:context=".ui.activity.SplashActivity">
 
-    <LinearLayout
-        android:id="@+id/app_intro"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/app_logo_long"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_black"
-            android:text="@string/binus"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textColor="@color/blue_primary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:fontFamily="@font/nunito_black"
-            android:text="@string/logo_spacer"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_regular"
-            android:text="@string/myforum"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/intro_author"
