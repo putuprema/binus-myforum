@@ -19,7 +19,6 @@ to Firebase for performance and crash analytics.
 - [OkHttp](http://square.github.io/okhttp/)
 - [Gson](https://github.com/google/gson)
 - [Firebase](https://firebase.google.com/), for performance and crash analytics
-- [Apache Commons Codec](https://commons.apache.org/proper/commons-codec/), for dealing with hashing, encoding, and encryption
 - [Apache Commons IO](https://commons.apache.org/proper/commons-io/), for dealing with files (ie. getting human readable file size, etc)
 - [Apache Commons Lang3](https://commons.apache.org/proper/commons-lang/), for dealing with string validation
 
