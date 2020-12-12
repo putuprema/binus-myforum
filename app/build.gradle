@@ -17,8 +17,8 @@ android {
         applicationId "xyz.purema.binusmyforum"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 5
-        versionName "1.0.2"
+        versionCode 6
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-perf-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 
     def room = "2.2.5"
     implementation "androidx.room:room-runtime:$room"

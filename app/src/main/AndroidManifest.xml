@@ -20,6 +20,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 
+        <service
+            android:name=".data.service.MessagingService"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+
+        </service>
+
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
@@ -32,10 +43,10 @@
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.ForumReplyActivity"
             android:screenOrientation="sensorPortrait" />
@@ -49,6 +60,11 @@
         <activity
             android:name=".ui.activity.IntroActivity"
             android:screenOrientation="sensorPortrait" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_clock" />
+
     </application>
 
 </manifest>

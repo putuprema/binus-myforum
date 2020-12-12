@@ -17,7 +17,7 @@ object NotificationUtils {
         ctx: Context,
         channelId: String = BinusMyForumApplication.NOTIFICATION_CHANNEL_ID_MAIN,
         title: String,
-        message: String,
+        message: String?,
         priority: Int = NotificationCompat.PRIORITY_DEFAULT,
         activityToOpen: Class<out Activity>? = null
     ) {
