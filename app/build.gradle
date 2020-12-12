@@ -17,7 +17,7 @@ android {
         applicationId "xyz.purema.binusmyforum"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 6
+        versionCode 7
         versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -40,6 +40,9 @@ android {
 }
 
 dependencies {
+    def play_core = "1.9.0"
+    implementation "com.google.android.play:core:$play_core"
+
     implementation platform('com.google.firebase:firebase-bom:26.1.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'

@@ -1,6 +1,7 @@
 package xyz.purema.binusmyforum.data.prefs
 
 import android.content.Context
+import java.time.LocalDate
 
 class SharedPrefs(
     ctx: Context
@@ -12,6 +13,7 @@ class SharedPrefs(
         const val PREFS_LAST_EMAIL = "last_email"
         const val PREFS_BINUSIAN_ID = "binusian_id"
         const val PREFS_COURSE_DATA_SYNCHRONIZED = "course_data_synchronized"
+        const val PREFS_LAST_REVIEW_POPUP = "last_review_popup"
     }
 
     private val prefs = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -35,6 +37,13 @@ class SharedPrefs(
     var courseDataSynchronized: Boolean
         get() = prefs.getBoolean(PREFS_COURSE_DATA_SYNCHRONIZED, false)
         set(value) = prefs.edit().putBoolean(PREFS_COURSE_DATA_SYNCHRONIZED, value).apply()
+
+    var lastReviewPopup: LocalDate?
+        get() {
+            val dateStr = prefs.getString(PREFS_LAST_REVIEW_POPUP, null) ?: return null
+            return LocalDate.parse(dateStr)
+        }
+        set(value) = prefs.edit().putString(PREFS_LAST_REVIEW_POPUP, value.toString()).apply()
 
     fun clear() = prefs.edit().clear().commit()
 }

@@ -1,6 +1,7 @@
 package xyz.purema.binusmyforum.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -24,6 +25,7 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import xyz.purema.binusmyforum.BinusMyForumApplication
 import xyz.purema.binusmyforum.R
+import xyz.purema.binusmyforum.data.prefs.SharedPrefs
 import xyz.purema.binusmyforum.domain.DataState
 import xyz.purema.binusmyforum.domain.model.forum.ForumThread
 import xyz.purema.binusmyforum.domain.utils.ActivityUtils
@@ -32,6 +34,9 @@ import xyz.purema.binusmyforum.ui.dialog.LoadingDialog
 import xyz.purema.binusmyforum.ui.viewmodel.ForumReplyViewEvent
 import xyz.purema.binusmyforum.ui.viewmodel.ForumReplyViewModel
 import java.net.URLDecoder
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import javax.inject.Inject
 import kotlin.math.pow
 
 @ExperimentalCoroutinesApi
@@ -51,6 +56,8 @@ class ForumReplyActivity : AppCompatActivity() {
     private lateinit var btnDeleteAttachment: MaterialButton
     private var attachment: Uri? = null
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
     private val viewModel: ForumReplyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -210,7 +217,7 @@ class ForumReplyActivity : AppCompatActivity() {
                 is DataState.Success -> {
                     loadingDlg.dismiss()
                     Toast.makeText(this, getString(R.string.reply_sent), Toast.LENGTH_SHORT).show()
-                    finish()
+                    onBackPressed()
                 }
                 is DataState.Error -> {
                     loadingDlg.dismiss()
@@ -225,5 +232,27 @@ class ForumReplyActivity : AppCompatActivity() {
     private fun handleFilePermissionDenied() {
         Toast.makeText(this, getString(R.string.open_file_permission_denied), Toast.LENGTH_SHORT)
             .show()
+    }
+
+    private fun shouldPromptAppReview() {
+        val intent = Intent(this, HomeActivity::class.java)
+
+        val lastReviewPopup = sharedPrefs.lastReviewPopup
+        if (lastReviewPopup == null || ChronoUnit.DAYS.between(
+                lastReviewPopup,
+                LocalDate.now()
+            ) > 3
+        ) {
+            intent.putExtra("should_prompt_review", true)
+        } else {
+            intent.putExtra("should_prompt_review", false)
+        }
+
+        setResult(RESULT_OK, intent)
+    }
+
+    override fun onBackPressed() {
+        shouldPromptAppReview()
+        finish()
     }
 }

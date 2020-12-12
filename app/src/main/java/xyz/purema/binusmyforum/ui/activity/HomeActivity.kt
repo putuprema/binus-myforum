@@ -16,12 +16,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import xyz.purema.binusmyforum.R
+import xyz.purema.binusmyforum.data.prefs.SharedPrefs
 import xyz.purema.binusmyforum.domain.DataState
 import xyz.purema.binusmyforum.domain.model.student.Student
 import xyz.purema.binusmyforum.domain.utils.ActivityUtils
 import xyz.purema.binusmyforum.ui.adapter.ForumItemAdapter
 import xyz.purema.binusmyforum.ui.viewmodel.HomeViewEvent
 import xyz.purema.binusmyforum.ui.viewmodel.HomeViewModel
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -33,6 +35,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var mLogoutButton: Button
     private lateinit var mLogoutDialog: AlertDialog
     private lateinit var mRefreshForumDialog: AlertDialog
+
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
     private var forumCacheUpdating: Boolean = false
 
     private val viewModel: HomeViewModel by viewModels()
@@ -100,7 +105,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        mForumItemAdapter = ForumItemAdapter(this)
+        mForumItemAdapter = ForumItemAdapter(this, sharedPrefs)
         mForumRecyclerView = findViewById(R.id.forum_item_container)
         mForumRecyclerView.layoutManager = LinearLayoutManager(this)
         mForumRecyclerView.adapter = mForumItemAdapter

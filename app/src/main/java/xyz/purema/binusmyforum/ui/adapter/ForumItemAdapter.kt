@@ -1,25 +1,27 @@
 package xyz.purema.binusmyforum.ui.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import xyz.purema.binusmyforum.R
+import xyz.purema.binusmyforum.data.prefs.SharedPrefs
 import xyz.purema.binusmyforum.domain.model.forum.GslcForum
 import xyz.purema.binusmyforum.domain.utils.DateUtils
-import xyz.purema.binusmyforum.ui.activity.ForumReplyActivity
+import xyz.purema.binusmyforum.ui.contract.ForumReplyActivityContract
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 class ForumItemAdapter(
-    private val ctx: Context
+    private val ctx: AppCompatActivity,
+    private val sharedPrefs: SharedPrefs
 ) : RecyclerView.Adapter<ForumItemAdapter.ViewHolder>() {
     private val gslcForumThreads: MutableList<GslcForum> = mutableListOf()
 
@@ -65,9 +67,7 @@ class ForumItemAdapter(
                 Toast.makeText(ctx, ctx.getString(R.string.no_forum_toast), Toast.LENGTH_SHORT)
                     .show()
             } else {
-                val intent = Intent(ctx, ForumReplyActivity::class.java)
-                intent.putExtra("forum_thread", gslc.forumThread)
-                ctx.startActivity(intent)
+                forumReplyActivity.launch(gslc.forumThread)
             }
         }
     }
@@ -79,4 +79,23 @@ class ForumItemAdapter(
         gslcForumThreads.addAll(newData)
         notifyDataSetChanged()
     }
+
+    @ExperimentalCoroutinesApi
+    private val forumReplyActivity =
+        ctx.registerForActivityResult(ForumReplyActivityContract()) { shouldPromptAppReview ->
+            if (shouldPromptAppReview) {
+                val reviewManager = ReviewManagerFactory.create(ctx)
+
+                // request in-app review flow
+                reviewManager.requestReviewFlow().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        // launch the in-app review flow
+                        val reviewInfo = it.result
+                        reviewManager.launchReviewFlow(ctx, reviewInfo).addOnCompleteListener {
+                            sharedPrefs.lastReviewPopup = LocalDate.now()
+                        }
+                    }
+                }
+            }
+        }
 }
