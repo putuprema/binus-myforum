@@ -2,6 +2,7 @@ package xyz.purema.binusmyforum.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -15,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import xyz.purema.binusmyforum.R
 import xyz.purema.binusmyforum.data.service.AppUpdateService
+import xyz.purema.binusmyforum.domain.DataState
 import xyz.purema.binusmyforum.domain.utils.ActivityUtils
 import xyz.purema.binusmyforum.ui.viewmodel.AuthState
 import xyz.purema.binusmyforum.ui.viewmodel.SplashViewEvent
@@ -61,35 +63,50 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkForAppUpdate() {
-        appUpdateService.appUpdateInfo.observe(this) { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                if (appUpdateInfo.updatePriority() >= 5 && appUpdateInfo.isUpdateTypeAllowed(
-                        AppUpdateType.IMMEDIATE
-                    )
-                ) {
-                    appUpdateService.appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
-                        this,
-                        AppUpdateService.REQUEST_CODE_APP_UPDATE
-                    )
-                } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
-                    appUpdateService.appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        AppUpdateType.FLEXIBLE,
-                        this,
-                        AppUpdateService.REQUEST_CODE_APP_UPDATE
-                    )
+        appUpdateService.updateCheckState.observe(this) {
+            when (it) {
+                is DataState.Success -> {
+                    val appUpdateInfo = it.data
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                        if (appUpdateInfo.updatePriority() >= 5 && appUpdateInfo.isUpdateTypeAllowed(
+                                AppUpdateType.IMMEDIATE
+                            )
+                        ) {
+                            appUpdateService.appUpdateManager.startUpdateFlowForResult(
+                                appUpdateInfo,
+                                AppUpdateType.IMMEDIATE,
+                                this,
+                                AppUpdateService.REQUEST_CODE_APP_UPDATE
+                            )
+                        } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                            appUpdateService.appUpdateManager.startUpdateFlowForResult(
+                                appUpdateInfo,
+                                AppUpdateType.FLEXIBLE,
+                                this,
+                                AppUpdateService.REQUEST_CODE_APP_UPDATE
+                            )
+                        }
+                    } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                        appUpdateService.appUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo,
+                            AppUpdateType.IMMEDIATE,
+                            this,
+                            AppUpdateService.REQUEST_CODE_APP_UPDATE
+                        )
+                    } else {
+                        resumeSession()
+                    }
                 }
-            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                appUpdateService.appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    this,
-                    AppUpdateService.REQUEST_CODE_APP_UPDATE
-                )
-            } else {
-                resumeSession()
+                is DataState.Error -> {
+                    Log.e(
+                        SplashActivity::class.java.simpleName,
+                        "Exception caught when checking for app update: ${it.exception.message}",
+                        it.exception
+                    )
+                    resumeSession()
+                }
+                else -> {
+                }
             }
         }
     }
@@ -106,10 +123,5 @@ class SplashActivity : AppCompatActivity() {
         if (requestCode == AppUpdateService.REQUEST_CODE_APP_UPDATE) {
             resumeSession(false)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        appUpdateService.cleanup()
     }
 }
