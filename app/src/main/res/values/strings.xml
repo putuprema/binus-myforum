@@ -8,6 +8,8 @@
     <string name="dialog_positive_btn">Lanjut</string>
     <string name="dialog_neutral_btn">Ngga deh</string>
 
+    <string name="update_available">Ada update nih. Install dong.</string>
+    <string name="install">Install</string>
     <string name="all_forum_replied">Yey, semua forum udah dibalas</string>
     <string name="upload_file_over_limit">Duh, filenya jangan lebih dari %1$s MB dong</string>
     <string name="open_file_permission_denied">Izinin ambil filenya dong please!!</string>

@@ -13,10 +13,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
         <item name="android:fontFamily">@font/nunito</item>
         <item name="android:windowBackground">@color/blue_super_dark</item>
+    </style>
+
+    <style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="actionTextColorAlpha">1</item>
+        <item name="android:layout_margin">0dp</item>
     </style>
 
     <style name="ThemeOverlay.App.AlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">

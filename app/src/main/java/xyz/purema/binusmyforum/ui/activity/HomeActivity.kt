@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.work.WorkInfo
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.install.model.InstallStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import xyz.purema.binusmyforum.R
 import xyz.purema.binusmyforum.data.prefs.SharedPrefs
+import xyz.purema.binusmyforum.data.service.AppUpdateService
 import xyz.purema.binusmyforum.domain.DataState
 import xyz.purema.binusmyforum.domain.model.student.Student
 import xyz.purema.binusmyforum.domain.utils.ActivityUtils
@@ -38,6 +41,9 @@ class HomeActivity : AppCompatActivity() {
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
+
+    @Inject
+    lateinit var appUpdateService: AppUpdateService
     private var forumCacheUpdating: Boolean = false
 
     private val viewModel: HomeViewModel by viewModels()
@@ -168,5 +174,22 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         })
+
+        appUpdateService.updateInstallState.observe(this) {
+            if (it == InstallStatus.DOWNLOADED) {
+                popupSnackbarForCompleteUpdate()
+            }
+        }
+    }
+
+    private fun popupSnackbarForCompleteUpdate() {
+        Snackbar.make(
+            findViewById(R.id.activity_home_layout),
+            getString(R.string.update_available),
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            setAction(getString(R.string.install)) { appUpdateService.appUpdateManager.completeUpdate() }
+            show()
+        }
     }
 }

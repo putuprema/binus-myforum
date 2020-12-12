@@ -7,20 +7,27 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import xyz.purema.binusmyforum.R
+import xyz.purema.binusmyforum.data.service.AppUpdateService
 import xyz.purema.binusmyforum.domain.utils.ActivityUtils
 import xyz.purema.binusmyforum.ui.viewmodel.AuthState
 import xyz.purema.binusmyforum.ui.viewmodel.SplashViewEvent
 import xyz.purema.binusmyforum.ui.viewmodel.SplashViewModel
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private val viewModel: SplashViewModel by viewModels()
+
+    @Inject
+    lateinit var appUpdateService: AppUpdateService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +36,8 @@ class SplashActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.version_num).text =
             packageManager.getPackageInfo(packageName, 0).versionName
 
+        checkForAppUpdate()
         subscribeObservers()
-        lifecycleScope.launch {
-            delay(1000)
-            viewModel.publishEvent(SplashViewEvent.ResumeSession)
-        }
     }
 
     private fun subscribeObservers() {
@@ -54,5 +58,58 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun checkForAppUpdate() {
+        appUpdateService.appUpdateInfo.observe(this) { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                if (appUpdateInfo.updatePriority() >= 5 && appUpdateInfo.isUpdateTypeAllowed(
+                        AppUpdateType.IMMEDIATE
+                    )
+                ) {
+                    appUpdateService.appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.IMMEDIATE,
+                        this,
+                        AppUpdateService.REQUEST_CODE_APP_UPDATE
+                    )
+                } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                    appUpdateService.appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.FLEXIBLE,
+                        this,
+                        AppUpdateService.REQUEST_CODE_APP_UPDATE
+                    )
+                }
+            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                appUpdateService.appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    AppUpdateService.REQUEST_CODE_APP_UPDATE
+                )
+            } else {
+                resumeSession()
+            }
+        }
+    }
+
+    private fun resumeSession(withDelay: Boolean = true) {
+        lifecycleScope.launch {
+            if (withDelay) delay(1000)
+            viewModel.publishEvent(SplashViewEvent.ResumeSession)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppUpdateService.REQUEST_CODE_APP_UPDATE) {
+            resumeSession(false)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appUpdateService.cleanup()
     }
 }
