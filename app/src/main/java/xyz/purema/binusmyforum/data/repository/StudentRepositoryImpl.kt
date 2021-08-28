@@ -31,6 +31,7 @@ import xyz.purema.binusmyforum.domain.repository.StudentRepository
 import xyz.purema.binusmyforum.domain.utils.ApiUtils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -172,10 +173,23 @@ class StudentRepositoryImpl(
                         courseClassScheduleList.addAll(
                             scheduleMap["${courseCode},${classSection}"]!!.eventCourseSchedule
                                 .map {
+                                    val eventDate = try {
+                                        if (it.eventDate.matches("^\\d{2} \\w{3} \\d{4} - \\d{2} \\w{3} \\d{4}$".toRegex())) {
+                                            LocalDate.parse(
+                                                "^\\d{2} \\w{3} \\d{4}".toRegex()
+                                                    .find(it.eventDate)!!.value, dateFormat
+                                            )
+                                        } else {
+                                            LocalDate.parse(it.eventDate, dateFormat)
+                                        }
+                                    } catch (ex: DateTimeParseException) {
+                                        LocalDate.now()
+                                    }
+
                                     CourseClassScheduleDb(
                                         courseClassMap[classNumber]!!.id,
                                         it.eventType,
-                                        LocalDate.parse(it.eventDate, dateFormat)
+                                        eventDate
                                     )
                                 }
                         )
