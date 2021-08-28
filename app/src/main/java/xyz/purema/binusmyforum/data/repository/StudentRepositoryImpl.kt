@@ -168,16 +168,18 @@ class StudentRepositoryImpl(
                             }
                         )
 
-                    courseClassScheduleList.addAll(
-                        scheduleMap["${courseCode},${classSection}"]!!.eventCourseSchedule
-                            .map {
-                                CourseClassScheduleDb(
-                                    courseClassMap[classNumber]!!.id,
-                                    it.eventType,
-                                    LocalDate.parse(it.eventDate, dateFormat)
-                                )
-                            }
-                    )
+                    if (scheduleMap["${courseCode},${classSection}"] != null) {
+                        courseClassScheduleList.addAll(
+                            scheduleMap["${courseCode},${classSection}"]!!.eventCourseSchedule
+                                .map {
+                                    CourseClassScheduleDb(
+                                        courseClassMap[classNumber]!!.id,
+                                        it.eventType,
+                                        LocalDate.parse(it.eventDate, dateFormat)
+                                    )
+                                }
+                        )
+                    }
                 }
 
             studentDao.update(studentDbMapper.mapToEntity(student))
