@@ -10,7 +10,7 @@ import xyz.purema.binusmyforum.domain.utils.NotificationUtils
 
 class MessagingService : FirebaseMessagingService() {
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(MessagingService::class.java.simpleName, "Got message from: ${remoteMessage.from}")
 

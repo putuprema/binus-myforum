@@ -56,7 +56,7 @@ class ForumDataSyncWorker @WorkerInject constructor(
         .setOngoing(true)
         .setSmallIcon(R.drawable.ic_clock)
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun doWork(): Result {
         setForeground(createForegroundInfo(indeterminate = true))
         syncForumData()

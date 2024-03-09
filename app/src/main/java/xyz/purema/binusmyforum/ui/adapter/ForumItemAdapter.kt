@@ -39,7 +39,7 @@ class ForumItemAdapter(
         return ViewHolder(v)
     }
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val forum = gslcForumThreads[position]

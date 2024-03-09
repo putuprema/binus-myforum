@@ -25,7 +25,7 @@ object NotificationUtils {
             val intent = Intent(ctx, activityToOpen).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
-            PendingIntent.getActivity(ctx, 0, intent, 0)
+            PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         } else null
 
         val notification = NotificationCompat.Builder(ctx, channelId)

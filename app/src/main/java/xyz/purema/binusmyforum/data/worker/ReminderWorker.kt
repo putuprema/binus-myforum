@@ -22,7 +22,7 @@ class ReminderWorker @WorkerInject constructor(
         const val TAG = "ReminderWorker"
     }
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun doWork(): Result {
         val result = forumRepository.getGslcForum(includeReplied = false)
         result.list.forEach {

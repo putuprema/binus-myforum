@@ -4,7 +4,11 @@
     package="xyz.purema.binusmyforum">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission
         android:name="android.permission.READ_PHONE_STATE"
         tools:node="remove" />
@@ -40,7 +44,8 @@
         <activity
             android:name=".ui.activity.SplashActivity"
             android:noHistory="true"
-            android:screenOrientation="sensorPortrait">
+            android:screenOrientation="sensorPortrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,16 +53,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:exported="true"
             android:name=".ui.activity.ForumReplyActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
+            android:exported="true"
             android:name=".ui.activity.HomeActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
+            android:exported="true"
             android:name=".ui.activity.LoginActivity"
             android:noHistory="true"
             android:screenOrientation="sensorPortrait" />
         <activity
+            android:exported="true"
             android:name=".ui.activity.IntroActivity"
             android:screenOrientation="sensorPortrait" />
 
