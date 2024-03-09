@@ -16,8 +16,8 @@ android {
         applicationId "xyz.purema.binusmyforum"
         minSdkVersion 22
         targetSdkVersion 34
-        versionCode 14
-        versionName "1.0.4"
+        versionCode 15
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
